@@ -37,10 +37,9 @@ ll solve()
 	} else if (pSum[N] % 4 != 0) {
 		return -1;
 	}
-	// dp[idx][i번나눌수있는 경우의 수]
-	// idx까지 i번째로 나눌수 있는 경우의 수
+    
 	ll avg = pSum[N] / 4;
-	for (int i = 1; i <= N; ++i) {
+	for (int i = 0; i <= N; ++i) {
 		dp[i][0] = 1;
 	}
 	for (int j = 1; j < 4; ++j) {
@@ -49,9 +48,7 @@ ll solve()
 			dp[i][j] = dp[i - 1][j];
 			if (pSum[i] == k) {
 				dp[i][j] += dp[i - 1][j - 1];
-				//해당 i = idx에서 j번째 구간을 자르고, 이전까지(i-1)의 j-1구간을 자르는 경우를 택함을 뜻함.
 			}
-			//이미 자른것들의 경우의 수를 더해줌
 		}
 	}
 	//N-1까지 잘랐을때, avg*4가 A[n]인것보장? ***************
