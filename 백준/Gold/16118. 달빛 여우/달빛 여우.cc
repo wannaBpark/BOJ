@@ -2,59 +2,27 @@
 #include <algorithm>
 #include <vector>
 #include <queue>
-#include <functional>
 #define ll long long
-#define OUTPUT 0
-
 void Wdijkstra();
 void Fdijkstra();
-
-struct Wnode {
-	int odd;
-	int to;
-	ll dist;
-	Wnode(int o, int t, int d) {
-		odd = o;
-		to = t;
-		dist = d;
-	}
-	bool operator<(const Wnode& i) const{
-		//if (odd == i.odd) {
-			if (dist == i.dist) {
-				if (to == i.to) {
-					return odd < i.odd;
-				}
-				return to > i.to;
-			}
-			return dist > i.dist;
-		/*}
-		return odd < i.odd;*/
-	}
-};
 struct node {
 	int to;
 	ll dist;
 };
-
-
 int N, M, ans = 0;
 ll Wdist[2][4010];
 ll Fdist[4010];
 ll INF = 2e9;
-
 using namespace std;
 vector<node> v[4010];
-
 int main()
 {
 	scanf("%d%d", &N, &M);
-
 	int a, b, d;
 	for (int i = 0; i < M; ++i) {
 		scanf("%d%d%d", &a, &b, &d);
-		d *= 2;
-		v[a].push_back({ b,d });
-		v[b].push_back({ a,d });
+		v[a].push_back({ b,d * 2 });
+		v[b].push_back({ a,d * 2 });
 	}
 
 	for (int i = 1; i <= N; ++i) {
@@ -68,7 +36,6 @@ int main()
 		if (Fdist[i] == INF) continue;
 		ans += (Fdist[i] < min(Wdist[0][i], Wdist[1][i])) ? 1 : 0;
 	}
-
 	printf("%d", ans);
 	return 0;
 }
@@ -76,16 +43,12 @@ int main()
 void Fdijkstra()
 {
 	priority_queue<pair<ll, int>> pq;
-	//우선순위를 거리가 아니라 node에 두고잇엇음 바보같이 ㅁㄴㅇㄻㄴㅇㄹ
 	Fdist[1] = 0;
 	pq.push(make_pair( 0, 1 ));
 	while (!pq.empty()) {
 		int cur = pq.top().second;
 		ll distance = -pq.top().first;
 		pq.pop();
-#if OUTPUT
-		printf("cur : %d distance : %lld\n", cur, distance);
-#endif
 		if (Fdist[cur] < distance) continue;
 
 		for (int i = 0; i < v[cur].size(); ++i) {
@@ -98,15 +61,6 @@ void Fdijkstra()
 			}
 		}
 	}
-#if OUTPUT
-	for (int i = 1; i <= N; ++i) {
-		printf("%lld ", Fdist[i]);
-	}
-	puts("");
-	puts("");
-#endif
-
-	
 }
 
 void Wdijkstra()
@@ -123,9 +77,6 @@ void Wdijkstra()
 		ll distance = -p.first.first;
 
 		pq.pop();
-#if OUTPUT
-		printf("odd : %d cur : %d distance : %lld\n", odd, cur, distance);
-#endif
 		if (Wdist[odd][cur] < distance) continue;
 
 		for (int i = 0; i < v[cur].size(); ++i) {
@@ -139,14 +90,4 @@ void Wdijkstra()
 			}
 		}
 	}
-#if OUTPUT
-	for (int i = 0; i <=1; ++i) {
-		for (int j = 1; j <= N; ++j) {
-			printf("%lld ", Wdist[i][j]);
-		}
-		puts("");
-	}
-
-	puts("");
-#endif
 }
