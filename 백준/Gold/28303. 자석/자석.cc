@@ -1,34 +1,28 @@
-#include <iostream>
+#include <cstdio>
 #include <algorithm>
-#include <map>
-#include <vector>
 #include <limits.h>
 typedef long long ll;
 using namespace std;
 ll N, K;
-vector<ll> v;
-vector<ll> v1;
-vector<ll> v2;
 int main()
 {
 	scanf("%lld%lld", &N, &K);
 	int a;
-	for (int i = 0; i < N; ++i) {
-		scanf("%d", &a); v.push_back(a);
-		v1.push_back(a - K * (i + 1));
-		v2.push_back(a + K * (i + 1));
-	}
-
 	ll ans = LLONG_MIN;
-	ll mn = v1[0];
-	for (int i = 1; i < N; ++i) {
-		ans = max(v1[i] - mn, ans);
-		mn = min(mn, v1[i]);
-	}
-	mn = v2[N - 1];
-	for (int i = N - 2; i >= 0; --i) {
-		ans = max(v2[i] - mn, ans);
-		mn = min(mn, v2[i]);
+	ll mn, mx;
+	for (int i = 0; i < N; ++i) {
+		scanf("%d", &a); 
+		ll t1 = a - K * (i + 1);
+		ll t2 = a + K * (i + 1);
+		
+		if (i == 0) {
+			mn = t1; mx = t2;
+		} else {
+			ans = max(t1 - mn, ans);
+			ans = max(mx - t2, ans);
+			mn = min(mn, t1);
+			mx = max(mx, t2);
+		}
 	}
 	printf("%lld", ans);
 	return 0;
