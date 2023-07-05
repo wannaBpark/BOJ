@@ -1,29 +1,25 @@
-#include <cstdio>
-#include <algorithm>
+#include <iostream>
 #include <limits.h>
-typedef long long ll;
 using namespace std;
-ll N, K;
+int N, K;
 int main()
 {
-	scanf("%lld%lld", &N, &K);
+	cin.tie(NULL); ios_base::sync_with_stdio(false);
+	cin >> N >> K;
 	int a;
-	ll ans = LLONG_MIN;
-	ll mn, mx;
+	long long ans = LLONG_MIN;
+	long long mn = 1e18, mx = -1e18;
 	for (int i = 0; i < N; ++i) {
-		scanf("%d", &a); 
-		ll t1 = a - K * (i + 1);
-		ll t2 = a + K * (i + 1);
-		
-		if (i == 0) {
-			mn = t1; mx = t2;
-		} else {
-			ans = max(t1 - mn, ans);
-			ans = max(mx - t2, ans);
-			mn = min(mn, t1);
-			mx = max(mx, t2);
-		}
+		cin >> a;
+		//v.push_back(a);
+		long long t1 = a - K * (i + 1);
+		long long t2 = a + K * (i + 1);
+
+		ans = t1 - mn > ans ? t1 - mn : ans;
+		ans = mx - t2 > ans ? mx - t2 : ans;
+		mn = mn < t1 ? mn : t1;
+		mx = mx > t2 ? mx : t2;
 	}
-	printf("%lld", ans);
+	cout << ans;
 	return 0;
 }
