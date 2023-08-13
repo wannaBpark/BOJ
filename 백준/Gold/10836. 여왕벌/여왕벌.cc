@@ -1,43 +1,55 @@
-#include <bits/stdc++.h>
-#define MAX_M 710
-#define fastio cin.tie(0)->sync_with_stdio(0)
-#define x first
-#define y second
-using namespace std;
+#include<stdio.h>
 
-using ll = long long;
-using ld = long double;
-using pii = pair<ll,ll>;
+#define max(X,Y) (((X) > (Y)) ? (X) : (Y))
 
-int M, N;
-int dx[3] = {-1,-1,0};
-int dy[3] = {-1,0,-1};
-int A[MAX_M * 2];
-int ans[MAX_M][MAX_M];
-int cnt[3] = {0};
-int main()
-{
-    fastio;
-    cout.tie(NULL);
-    cin >> M >> N;
-    for (int i = 0; i < N; ++i) {
-        int a, b, c;
-        int idx = 0;
-        cin >> a >> b >> c;
-        idx += a;
-        for (int j = 0; j < b; ++j) {
-            A[idx++] += 1;
-        }
-        for (int j = 0; j < c; ++j) {
-            A[idx++] += 2;
-        }
-    }
-    for (int i = M - 1; i >= 0; --i) {
-        cout << A[i] + 1 << ' ';
-        for (int j = M; j < 2*M - 1; ++j) {
-            cout << A[j] + 1 << ' ';
-        }
-        cout << endl;
-    }
-    return 0;
+int N, M;
+int dp[710][710];
+
+int main() {
+	scanf("%d %d", &M, &N);
+	for (int i = 0; i < M; i++) {
+		for (int j = 0; j < M; j++)dp[i][j] = 0;
+	}
+
+	for (int i = 0; i < N; i++) {
+		int d, d1, d2;
+		scanf("%d %d %d", &d, &d1, &d2);
+
+		for (int j = M - 1; j >= 0; j--) {
+			if (d2) {
+				dp[0][j] += 2;
+				d2--;
+			}
+			else if (d1) {
+				dp[0][j] += 1;
+				d1--;
+			}
+			else break;
+		}
+
+		for (int j = 1; j < M; j++) {
+			if (d2) {
+				dp[j][0] += 2;
+				d2--;
+			}
+			else if (d1) {
+				dp[j][0] += 1;
+				d1--;
+			}
+			else break;
+		}
+	}
+
+	for (int j = 0; j < M; j++) {
+		for (int k = 0; k < M; k++) {
+			if (j > 0 && k > 0) {
+				dp[j][k] = dp[j - 1][k];
+			}
+			printf("%d ", dp[j][k]+1);
+		}
+		printf("\n");
+	}
+
+
+	return 0;
 }
