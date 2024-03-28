@@ -24,6 +24,6 @@ int main()
         }
     }
     for (int i = 0; i <= sz; ++i) ans = max(ans, dp[sz][i]);
-    cout << ans << endl;
+    cout << ans;
     return 0;
 }
