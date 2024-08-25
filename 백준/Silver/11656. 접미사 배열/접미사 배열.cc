@@ -6,12 +6,12 @@ string S;
 int main()
 {
     cin.tie(NULL)->sync_with_stdio(false);
+    cout.tie(NULL);
     cin >> S;
-    int end = S.length() - 1;
-    for (int i = 0; i <= end; ++i) {
+    size_t end = S.length() - 1;
+    for (size_t i = 0; i <= end; ++i) {
         string sub = S.substr(i);
         v.push_back(sub);
-        // cout << "sub: " << sub << '\n';
     }
     sort(v.begin(), v.end());
     for (auto s : v) cout << s << '\n';
