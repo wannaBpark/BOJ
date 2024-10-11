@@ -15,17 +15,6 @@ vector<op> v;
 vector<int> order;
 int arr[60][60];
 
-
-void print(int r,int c,int s) {
-    printf("------%d %d %d rotation\n", r,c,s);
-    for (int i = r-s; i<=r+s; ++i) {
-        for (int j = c-s; j <=c+s; ++j) {
-            printf("%d ", arr[i][j]);
-        }
-        puts("");
-    }
-    printf("---------------\n");
-}
 static inline int OutOfRange(int sx, int sy, int ex, int ey, int x, int y) {
     return ((x>ex) || (x<sx) || (y>ey) || (y<sy));
 }
@@ -37,19 +26,14 @@ void rotate(int x1, int y1, int x2, int y2) {
     int tmp = arr[startX][startY];
     int nx = startX; int ny = startY;
     while (true) {
-        // printf("to %d %d dir:%d", nx, ny,dir);
-        // nx, ny 는 처음에 항상 유효하다 가정
         int& dest = arr[nx][ny];
-
         int IsOut = OutOfRange(x1,y1,x2,y2, nx + dx[dir], ny + dy[dir]);
+        
         dir += (IsOut == true) ? 1 : 0;
         if (dir >= 4) break;
-
+        
         nx = nx + dx[dir]; ny = ny + dy[dir];
-
-
         int& from = arr[nx][ny];
-        // printf(" from %d %d dest: %d from: %d %d\n", nx, ny, dest, from,dir);
         dest = from;
     }
     arr[startX][startY+1] = tmp;
@@ -59,7 +43,6 @@ void operation(int r, int c, int s) {
     for (int i = 1; i <= s; ++i) {
         rotate(r-i, c-i, r+i, c+i);
     }
-    // print(r,c,s);
 }
 
 int calculate() {
@@ -80,23 +63,19 @@ void solve() {
     int ans = 1e10;
     do {
         copyValue();
-
         for (int i = 0; i < order.size(); ++i) {
             auto& cur = v[order[i]];
             operation(cur.r, cur.c, cur.s);
-            // printf("%d %d %d\n", cur.r, cur.c, cur.s);
         }
         
         ans = min(ans, calculate());
     } while( next_permutation(order.begin(), order.end()) );
-
     cout << ans;
 }
 
 int main()
 {
     cin.tie(NULL)->sync_with_stdio(false);
-    
     cin >> N >> M >> K;
     for (int i = 1; i<= N; ++i) {
         for (int j = 1; j <=M; ++j) {
