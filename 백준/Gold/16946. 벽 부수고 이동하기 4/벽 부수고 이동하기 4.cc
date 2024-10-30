@@ -37,22 +37,21 @@ void bfs(int i, int j)
     m_cnt[r] =0;
     queue<pair<int,int>> q;
     visited[i][j] = true;
-    m_region[i][j] = r;        
+    m_region[i][j] = r;
     q.push({i,j});
     while(!q.empty()) {
         auto p = q.front(); q.pop();
-        int curx = p.first; int cury = p.second;
+        int curx = p.first; int cury = p.second;       
         m_cnt[r] = (m_cnt[r]+1);
-        m_region[curx][cury] = r;
         for(int i=0; i<4; ++i) {
             int ni = curx + di[i];
             int nj = cury + dj[i];
             if (!isRange(ni,nj) || visited[ni][nj] || A[ni][nj] == 1) continue;
             q.push({ni,nj});
             visited[ni][nj] =true;
+            m_region[ni][nj] = r; 
         }
     }
-    // cout << "m_cnt[r] : " << r << " " << m_cnt[r] << '\n';
 }
 void solve()
 {
@@ -60,7 +59,7 @@ void solve()
         for (int j = 0; j<M; ++j) {
             if (A[i][j] == 0 && !visited[i][j]) {
                 bfs(i, j);
-                region_cnt++;
+                ++region_cnt;
             }
         }
     }
