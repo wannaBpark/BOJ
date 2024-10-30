@@ -43,13 +43,13 @@ void bfs(int i, int j)
         auto p = q.front(); q.pop();
         int curx = p.first; int cury = p.second;
         m_cnt[r] = (m_cnt[r]+1);
+        m_region[curx][cury] = r;
         for(int i=0; i<4; ++i) {
             int ni = curx + di[i];
             int nj = cury + dj[i];
             if (!isRange(ni,nj) || visited[ni][nj] || A[ni][nj] == 1) continue;
             q.push({ni,nj});
             visited[ni][nj] =true;
-            m_region[ni][nj] = r; 
         }
     }
     // cout << "m_cnt[r] : " << r << " " << m_cnt[r] << '\n';
