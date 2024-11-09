@@ -39,41 +39,19 @@ void iteration() {
     int nx, ny;
     int x = sunwoo.first; int y = sunwoo.second;
     int cnt =0;
+    int rendez_vous = 2*(N+M) - 4;
     while (visited[x][y]!=true) {
-        if (cnt == Dist[x][y]) ans = min(ans, cnt);
         nx = x + dx[d]; ny = y + dy[d];
         if (!isRange(nx, ny)) {
             ++d; d = d%4;
             nx = x + dx[d]; ny = y + dy[d];
         }
+        int t1 = cnt++; int t2 = Dist[x][y];
         visited[x][y] = true;
-        x=nx; y = ny;
-        T1[x][y] = ++cnt;
-        // cout << x << " " << y <<" " << T1[x][y] << '\n';
-    }
-    x = sunwoo.first; y = sunwoo.second;
-    d=dir;
-    T1[x][y] = 0;
-    // for (int i =0; i<N; ++i) {
-    //     for (int j =0; j<M; ++j) {
-    //         cout << T1[i][j] << " ";
-    //     }
-    //     cout << '\n';
-    // }
-    while (visited[x][y]==true) {
-        nx = x + dx[d]; ny = y + dy[d];
-        if (!isRange(nx, ny)) {
-            ++d; d = d%4;
-            nx = x + dx[d]; ny = y + dy[d];
-        }
-        int t1 = T1[x][y]; int t2 = Dist[x][y];
-        visited[x][y] = 0;
         while (!(t1 >= t2)) {
-            t1 += cnt;
+            t1 += rendez_vous;
         }
         if ( (t1-t2) % 2== 0) {
-            //cout << "x, y : " << x << " " << y << '\n';
-            //cout << "t1 t2 : " <<t1 << " " << t2 << '\n';
             ans = min(ans, t1);
         }
         x=nx; y = ny;
@@ -98,13 +76,7 @@ int main()
         }
     }
     bfs();
-    for (int i =0; i<N; ++i) {
-        for (int j =0; j<M; ++j) {
-            visited[i][j] = 0;
-            // cout << Dist[i][j] << " ";
-        }
-        // cout << '\n';
-    }
+    for (int i =0; i<N; ++i) for (int j =0; j<M; ++j) visited[i][j] = 0;
     if ( sunwoo.first == 0) {
         dir = 0;
     } else if (sunwoo.first == N-1) {
