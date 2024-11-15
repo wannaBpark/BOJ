@@ -10,13 +10,13 @@ struct coin{
 };
 int ans;
 vector<coin> v;
-char b[22][22]; // board
-int visited[22][22][22][22]= {0,};
+char b[25][25]; // board
+int visited[25][25][25][25]= {0,};
 int dx[4]={0,0,1,-1};
 int dy[4]={1,-1,0,0};
 int N, M;
 static inline int IsRange(coin& c) {
-    int ret = (c.x >= 0 && c.x < N && c.y >= 0 && c.y<M);
+    int ret = (c.x >= 0 && c.x < N && c.y >= 0 && c.y < M);
     return ret == true ? 1 :0;
 }
 static inline int IsWall(int x, int y) {
@@ -37,13 +37,14 @@ void bfs(coin c1, coin c2, int cnt) {
         int ret = IsOneDown(n1, n2);
         if (ret == 0) continue;
         if (ret == 1) {
-            // cout << "update : " << cnt+1 << '\n'; 
-            ans = min(ans, cnt+1); return;
+            ans = min(ans, cnt+1); 
+            return;
         }
-        if (IsWall(n1.x, n1.y)) n1 = c1;
-        if (IsWall(n2.x, n2.y)) n2 = c2;        
+        if (IsWall(n1.x, n1.y)) {n1.x = c1.x; n1.y = c1.y;}
+        if (IsWall(n2.x, n2.y)) {n2.x = c2.x; n2.y = c2.y;}        
         // cout << "ret: "<<ret <<'\n'; 
         // if (visited[n1.x][n1.y][n2.x][n2.y] == true) continue;
+        visited[n1.x][n1.y][n2.x][n2.y] = true;
         bfs(n1,n2, cnt+1);
     }
 }
@@ -61,6 +62,6 @@ int main()
     bfs(v[0], v[1], 0);
     if (ans == INF || ans >10) { ans = -1; }
     // cout << "ans : ";
-    cout << ans;
+    cout << ans << '\n';
     return 0;
 }
