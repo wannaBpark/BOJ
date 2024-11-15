@@ -1,9 +1,6 @@
 #include <bits/stdc++.h>
 #define INF 1e9
-#define MXN 100010
-#define all(v) (v).begin(), (v).end()
 using namespace std;
-using ll = long long;
 
 struct coin{
     int x, y;
@@ -27,24 +24,19 @@ static inline int IsOneDown(coin& c1, coin& c2) {
     return cnt;
 }
 void bfs(coin c1, coin c2, int cnt) {
-    visited[c1.x][c1.y][c2.x][c2.y]= true;
     if (ans < cnt) return;
     if (cnt > 10) return;
     for (int i=0;i<4; ++i) {
         coin n1,n2;
-        n1 = {c1.x+dx[i], c1.y+dy[i]}; 
-        n2 = {c2.x+dx[i], c2.y+dy[i]};
+        n1 = {c1.x+dx[i], c1.y+dy[i]}; n2 = {c2.x+dx[i], c2.y+dy[i]};
         int ret = IsOneDown(n1, n2);
         if (ret == 0) continue;
         if (ret == 1) {
             ans = min(ans, cnt+1); 
             return;
         }
-        if (IsWall(n1.x, n1.y)) {n1.x = c1.x; n1.y = c1.y;}
-        if (IsWall(n2.x, n2.y)) {n2.x = c2.x; n2.y = c2.y;}        
-        // cout << "ret: "<<ret <<'\n'; 
-        // if (visited[n1.x][n1.y][n2.x][n2.y] == true) continue;
-        visited[n1.x][n1.y][n2.x][n2.y] = true;
+        if (IsWall(n1.x, n1.y)) n1=c1;
+        if (IsWall(n2.x, n2.y)) n2=c2;
         bfs(n1,n2, cnt+1);
     }
 }
@@ -61,7 +53,6 @@ int main()
     ans = INF;
     bfs(v[0], v[1], 0);
     if (ans == INF || ans >10) { ans = -1; }
-    // cout << "ans : ";
-    cout << ans << '\n';
+    cout << ans;
     return 0;
 }
