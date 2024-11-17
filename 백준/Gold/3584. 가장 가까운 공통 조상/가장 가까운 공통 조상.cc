@@ -15,7 +15,7 @@ void dfs(int cur, int height) {
 }
 int LCA(int a, int b) {
     if (depth[a]<depth[b]) swap(a,b);
-    while((depth[a] > depth[b])) {
+    while(depth[a] > depth[b]) {
         a=par[a];
     }
     while(a != b) {
@@ -33,7 +33,8 @@ void solve() {
         for(int i=1; i<=N; ++i) v[i].clear();
         for (int i =0; i<N-1; ++i) {
             cin >> p >> child;
-            v[p].push_back(child); par[child] = p;
+            v[p].push_back(child); 
+            par[child] = p;
         }
         cin >> A >> B;
         for (int i =1; i<=N; ++i) {
@@ -41,8 +42,7 @@ void solve() {
         }
         par[root] = root;
         dfs(root, 0);
-        int ret = LCA(A, B);
-        cout << ret << '\n';
+        cout << LCA(A, B) << '\n';
     }
 }
 int main()
