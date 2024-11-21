@@ -1,21 +1,20 @@
 #include <bits/stdc++.h>
-const int INF = 1e9;
 using namespace std;
 using ll = long long;
 using pii = pair<int,int>;
+
+const int INF = 1e9;
 queue<pii> q;
 char A[1010][1010];
 int D[1010][1010];
 int dx[4] = {0,0,-1,1};
 int dy[4] = {-1,1,0,0};
-int N, M, K;
-int X1, Y1, X2, Y2;
-void input();
+int N, M, K,X1, Y1, X2, Y2;
 
+void input();
 static inline int IsRange(int i, int j) {
     return (i>=1 && i<=N && j>=1 && j<=M);
 }
-
 void solve(int i, int j)
 {
     q.push({i,j});
@@ -24,14 +23,14 @@ void solve(int i, int j)
         int j = q.front().second;
         q.pop();
         if (i == X2 && j == Y2) continue;
-
         for(int dir=0; dir<4; ++dir) {
             for (int k = 1; k <= K; ++k) {
-                int nx = dx[dir] * k + i; 
-                int ny = dy[dir] * k + j;
+                int nx = dx[dir] * k + i; int ny = dy[dir] * k + j;
                 if (!IsRange(nx,ny) || A[nx][ny] == '#' || D[nx][ny] < D[i][j] + 1) {
                     break;
                 }
+                // 방문 안한 곳만 push
+                // 이렇게 안하면 q에 너무 많은 중복 값 push -> 시간초과
                 if (D[nx][ny] == INF) {
                     D[nx][ny] = D[i][j] + 1;
                     q.push({nx,ny});
@@ -47,11 +46,10 @@ int main()
     input();
     D[X1][Y1] = 0;
     solve(X1, Y1);
-    
     if (D[X2][Y2] == INF) {
         D[X2][Y2] = -1;    
     }
-    cout << D[X2][Y2]<<'\n';
+    cout << D[X2][Y2];
     return 0;
 }
 
